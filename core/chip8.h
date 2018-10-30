@@ -3,12 +3,6 @@
 
 #include <cstdint>      //uint8_t, uint16_t, uint32_t
 #include <stdexcept>    //std::runtime_error
-//TODO README note must support cstdint types listed above
-//TODO reference laurence, cowgod, mastering, etc
-//TODO note focus on compatibility, not accuracy
-//TODO note timers tied to CPU cycles
-//TODO driver sound
-//TODO thread safety
 
 namespace chip8
 {

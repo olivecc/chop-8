@@ -6,18 +6,17 @@ compatibility with many common CHIP-8 programs. The emulator core is an
 interpreter, as I have yet to become adept with dynamic recompilation (dynarec) 
 techniques.  
 The core's only dependency is the C\+\+ Standard Library, and is independent of 
-IO operations. Some code for basic cross-platform file/input/video operations 
-that I use for general purpose IO (although yet to implement sound, which I 
-plan to implement when writing an emulator requiring more complex audio), based 
-on the C\+\+ Standard Library and the 
-[Simple DirectMedia Layer](https://wiki.libsdl.org/FrontPage) library version 
-2.0 (i.e. SDL2), is provided alongside a simple driver program as a primitive 
+IO operations. Some code for basic cross-platform IO operations (excluding
+audio, to be implemented later), based on the C\+\+ Standard Library and the 
+[Simple DirectMedia Layer](https://wiki.libsdl.org/FrontPage) library (version
+2.0, i.e. SDL2), is provided alongside a simple driver program as a primitive 
 front-end to allow easy use/debugging of the emulator core.
 
 ## Building
 
 For the emulator core alone, the only prerequisite is a hosted compiler 
-implementation of C\+\+14 (e.g. gcc with libstdc++).  
+implementation of C\+\+14 supporting uint8\_t, uint16\_t, and uint32\_t
+(e.g. gcc with libstdc++ on x86\_64).  
 To build the front-end in addition to this, SDL2 is also required 
 \([install instructions here](https://wiki.libsdl.org/Installation)\).  
 **UNDER CONSTRUCTION**
