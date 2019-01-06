@@ -1,6 +1,6 @@
 # CHOP-8 
 
-CHOP-8 is a CHIP-8 emulator written in C\+\+14. It was written as an 
+CHOP-8 is a CHIP-8 emulator written in C\+\+. It was written as an 
 introductory exercise in emulator programming, and has focus placed on 
 compatibility with many common CHIP-8 programs. The emulator core is an 
 interpreter, as I have yet to become adept with dynamic recompilation (dynarec) 
