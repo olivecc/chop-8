@@ -38,14 +38,19 @@ void emu_io::load_rom_file(const char* path, void* buffer, size_t max_size)
 class IO::IO_impl
 {
 private:
+    static constexpr unsigned int sample_rate = 44100;
     const Uint8* kb_state_;
+    float audio_off[sample_rate / 60] = { 0 };
+    float audio_on [sample_rate / 60];
 
     SDL_Window* window_;
     SDL_Renderer* renderer_;
     SDL_Texture* texture_;
+    SDL_AudioDeviceID audio_device_;
     uint32_t* canvas_;
     const unsigned int width_;
     const unsigned int height_;
+    bool is_audible = false;
 
 public:
     IO_impl(const char* title, 
@@ -79,6 +84,24 @@ public:
         canvas_ = static_cast<uint32_t*>(
                 std::malloc(width * height * sizeof(uint32_t)));
         if(canvas_ == nullptr) io_fail_init();
+
+        SDL_AudioSpec audio_spec{};
+        SDL_AudioSpec dummy;
+        audio_spec.freq = sample_rate;
+        audio_spec.format = AUDIO_F32;
+        audio_spec.channels = 1;
+        audio_spec.samples = 2048;
+        audio_spec.callback = NULL;
+        
+        audio_device_ = SDL_OpenAudioDevice(NULL, 0, &audio_spec, &dummy, 
+            NO_FLAGS);
+        if(audio_device_ == 0) io_fail_init();
+        SDL_PauseAudioDevice(audio_device_, 0);
+
+        for(unsigned int i = 0; i < sample_rate / 60; ++i)
+        {
+            audio_on[i] = (((i / 46) % 2 == 0) ? 1 : -1);
+        }
     }
 
     ~IO_impl()
@@ -99,8 +122,13 @@ public:
         SDL_RenderCopy(renderer_, texture_, NULL, NULL);
         SDL_RenderPresent(renderer_);
 
+        float (&audio_buf)[sample_rate / 60] = (is_audible ? audio_on : audio_off);
+        SDL_QueueAudio(audio_device_, audio_buf, sizeof(audio_buf));
+
         return *this;
     }
+
+    IO_impl& set_audible(bool val) { is_audible = val; return *this; }
 
     template<typename T, typename F>
     IO_impl& render(const T* buffer, F to_argb)
@@ -133,6 +161,12 @@ IO::~IO() = default;
 IO& IO::render(const uint32_t* buffer)
 {
     pImpl_->render(buffer);
+    return *this;
+}
+
+IO& IO::set_audible(bool val)
+{
+    pImpl_->set_audible(val);
     return *this;
 }
 

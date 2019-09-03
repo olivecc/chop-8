@@ -37,12 +37,9 @@ running a program.
 
 ## Future Additions
 
-* Add audio to front-end
 * Better build support/documentation, e.g. CMake support 
 * Thread safety (if not already satisfied)
 * (Dis)assembler  
-* Support for the Libretro API to use RetroArch as a front-end  
-* Dynamic recompilation  
 
 ## Built With
 

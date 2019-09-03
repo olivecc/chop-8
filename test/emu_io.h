@@ -269,6 +269,8 @@ namespace emu_io
 
         IO& render(const uint32_t* buffer);
 
+        IO& set_audible(bool);
+
         IO& update_input(void);
 
         bool is_key_held(Keys key);
